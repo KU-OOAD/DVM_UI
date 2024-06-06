@@ -27,6 +27,9 @@ const successPayDialog = document.getElementById('successPayDialog');
 const failPayDialog = document.getElementById('failPayDialog');
 const issueCodeDialog = document.getElementById('issueCodeDialog');
 
+const enterCodeBtn = document.getElementById('enterCodeBtn');
+const enterCodeDialog = document.getElementById('enterCodeDialog');
+
 // drink selection buttons, dialog
 drinks.map((drink) => {
   const button = document.createElement('button');
@@ -81,12 +84,14 @@ payBtn.addEventListener('click', () => {
   enterCardInfoDialog.showModal();
 
   cardInfoEnterBtn.addEventListener('click', () => {
-    if (!isPrepay) {  // TODO: 결제성공 시 (api 필요) (코드수정필요)
+    const cardInfo = document.getElementById('cardInfo').value;
+    if (cardInfo) {
       enterCardInfoDialog.close();
-      successPayDialog.showModal();
-    } else { // 결제실패 시
-      enterCardInfoDialog.close();
-      failPayDialog.showModal();
+      if (!isPrepay) {  // TODO: 결제성공 시 (api 필요) (코드수정필요)
+        successPayDialog.showModal();
+      } else { // 결제실패 시
+        failPayDialog.showModal();
+      }
     }
   });
 });
@@ -96,14 +101,36 @@ prePayBtn.addEventListener('click', () => {
   enterCardInfoDialog.showModal();
 
   cardInfoEnterBtn.addEventListener('click', () => {
-    if (isPrepay) {  // TODO: 결제성공 시 (api 필요) (코드수정필요)
+    const cardInfo = document.getElementById('cardInfo').value;
+    if (cardInfo) {
       enterCardInfoDialog.close();
-      const issueCodeContent = document.getElementById('issueCodeContent');
-      issueCodeContent.innerHTML = `인증코드는 ${code} 입니다. <br> 음료 ${drinkCount}개를 (${x}, ${y}) 위치의 <br> 자판기에서 수령하세요.`;
-      issueCodeDialog.showModal();
-    } else { // 결제실패 시
-      enterCardInfoDialog.close();
-      failPayDialog.showModal();
+      if (isPrepay) {  // TODO: 결제성공 시 (api 필요) (코드수정필요)
+        const issueCodeContent = document.getElementById('issueCodeContent');
+        issueCodeContent.innerHTML = `인증코드는 ${code} 입니다. <br> 음료 ${drinkCount}개를 (${x}, ${y}) 위치의 <br> 자판기에서 수령하세요.`;
+        issueCodeDialog.showModal();
+      } else { // 결제실패 시
+        failPayDialog.showModal();
+      }
+    }
+  });
+});
+
+enterCodeBtn.addEventListener('click', () => {
+  enterCodeDialog.showModal();
+
+  const codeConfirmBtn = document.getElementById('codeConfirmBtn');
+  codeConfirmBtn.addEventListener('click', () => {
+    const EnteredCode = document.getElementById('code').value;
+    if (EnteredCode) {
+      if (isPrepay) { // TODO: 수정 필요 => 인증코드가 맞으면
+        const successEnterDialog = document.getElementById('successEnterDialog');
+        enterCodeDialog.close();
+        successEnterDialog.showModal();
+      } else {
+        const failEnterDialog = document.getElementById('failEnterDialog');
+        enterCodeDialog.close();
+        failEnterDialog.showModal();
+      }      
     }
   });
 });

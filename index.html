@@ -54,6 +54,7 @@
       width: 250px;
       border: 0;
       border-radius: 15px;
+      text-align: center;
     }
 
     .round {
@@ -97,11 +98,7 @@
       padding-bottom: 10px;
     }
 
-    #enterCardInfoDialog {
-      text-align: center;
-    }
-
-    #cardInfo {
+    input {
       margin-bottom: 15px;
     }
   </style>
@@ -111,7 +108,7 @@
     <section class="gridContainer" id="drinksContainer"></section>
 
     <section class="bottomBtnWrapper">
-      <button class="styledBtn backBlue textWhite">인증코드 입력</button>
+      <button id="enterCodeBtn" class="styledBtn backBlue textWhite">인증코드 입력</button>
       <button class="styledBtn backBlue textWhite">관리자 모드</button>
     </section>
 
@@ -184,6 +181,30 @@
     </p>
     <section class="bottomBtnWrapper">
       <button id="issueCodeOkBtn" class="closeBtn styledBtn backBlue textWhite">확인</button>
+    </section>
+  </dialog>
+
+  <dialog id="enterCodeDialog" class="styledDialog backLightGray">
+    <p>인증코드 입력</p>
+    <label for="code"></label>
+    <input type="text" id="code" name="code">
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backGray textWhite">뒤로가기</button>
+      <button id="codeConfirmBtn" class="styledBtn backBlue textWhite">입력</button>
+    </section>
+  </dialog>
+
+  <dialog id="successEnterDialog" class="styledDialog backLightGray">
+    <p>인증되었습니다. <br> 음료수를 수령하세요.</p>
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backBlue textWhite">확인</button>
+    </section>
+  </dialog>
+
+  <dialog id="failEnterDialog" class="styledDialog backLightGray">
+    <p>인증코드 오류입니다. <br> 인증코드를 다시 확인해주세요.</p>
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backBlue textWhite">확인</button>
     </section>
   </dialog>
 
