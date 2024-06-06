@@ -28,12 +28,13 @@
       padding: 40px 0;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 15px;
+      gap: 20px;
     }
 
     .bottomBtnWrapper {
       display: flex;
       gap: 10px;
+      width: 100%;
     }
 
     .styledBtn {
@@ -52,6 +53,7 @@
     .styledDialog {
       width: 250px;
       border: 0;
+      border-radius: 15px;
     }
 
     .round {
@@ -86,14 +88,26 @@
       color: #bebebe;
     }
 
+    .textDarkGray {
+      color: #838383;
+    }
+
     #drinkCountWrapper {
       display: flex;
       padding-bottom: 10px;
     }
+
+    #enterCardInfoDialog {
+      text-align: center;
+    }
+
+    #cardInfo {
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
-  <main class="pageContainer backLightGray">
+  <article class="pageContainer backLightGray">
     <section class="gridContainer" id="drinksContainer"></section>
 
     <section class="bottomBtnWrapper">
@@ -101,7 +115,7 @@
       <button class="styledBtn backBlue textWhite">관리자 모드</button>
     </section>
 
-  </main>
+  </article>
 
   <dialog id="selectDrinkDialog" class="styledDialog backLightGray">
     <p id="selectDrinkDialogInfo"></p>
@@ -110,13 +124,68 @@
       <p id="drinkCountNum">0</p>
       <button id="incrementBtn" class="styledBtn">+</button>      
     </section>
-
     <section class="bottomBtnWrapper">
-      <button id="closeBtn" class="styledBtn backGray textWhite">뒤로가기</button>
+      <button class="closeBtn styledBtn backGray textWhite">뒤로가기</button>
+      <button id="purchaseBtn" class="styledBtn backBlue textWhite">결제하기</button>
+    </section>
+  </dialog>
+
+  <dialog id="payDialog" class="styledDialog backLightGray">
+    <p id="payContent">
+      결제하시겠습니까?<br>
+      <small id="priceInfo" class="textDarkGray"></small>
+    </p>
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backGray textWhite">뒤로가기</button>
       <button id="payBtn" class="styledBtn backBlue textWhite">결제하기</button>
     </section>
   </dialog>
 
+  <dialog id="prePayDialog" class="styledDialog backLightGray">
+    <p id="prePayContent">
+      다른 자판기에 수량이 있습니다.<br>
+      해당 지점에서 수령하시겠습니까?<br>
+      <small id="locInfo" class="textDarkGray"></small>
+    </p>
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backGray textWhite">뒤로가기</button>
+      <button id="prePayBtn" class="styledBtn backBlue textWhite">선결제</button>
+    </section>
+  </dialog>
+
+  <dialog id="enterCardInfoDialog" class="styledDialog backLightGray">
+    <p>카드 정보 입력</p>
+    <label for="cardInfo"></label>
+    <input type="text" id="cardInfo" name="cardInfo">
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backGray textWhite">뒤로가기</button>
+      <button id="cardInfoEnterBtn" class="styledBtn backBlue textWhite">확인</button>
+    </section>
+  </dialog>
+
+  <dialog id="successPayDialog" class="styledDialog backLightGray">
+    <p>성공적으로 결제되었습니다.</p>
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backBlue textWhite">확인</button>
+    </section>
+  </dialog>
+
+  <dialog id="failPayDialog" class="styledDialog backLightGray">
+    <p>결제를 실패하였습니다.</p>
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backBlue textWhite">확인</button>
+    </section>
+  </dialog>
+
+  <dialog id="issueCodeDialog" class="styledDialog backLightGray">
+    <p>
+      성공적으로 선결제되었습니다. <br>
+      <small id="issueCodeContent" class="textDarkGray"></small>
+    </p>
+    <section class="bottomBtnWrapper">
+      <button id="issueCodeOkBtn" class="closeBtn styledBtn backBlue textWhite">확인</button>
+    </section>
+  </dialog>
 
   <script src="./app.js"></script>
 </body>
