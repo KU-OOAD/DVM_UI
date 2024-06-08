@@ -18,7 +18,7 @@
     }
 
     .pageContainer {
-      width: 520px;
+      max-width: 520px;
       height: 100%;
       margin: auto;
       padding: 0 15px;
@@ -109,7 +109,7 @@
 
     <section class="bottomBtnWrapper">
       <button id="enterCodeBtn" class="styledBtn backBlue textWhite">인증코드 입력</button>
-      <button class="styledBtn backBlue textWhite">관리자 모드</button>
+      <button id="adminModeBtn" class="styledBtn backBlue textWhite">관리자 모드</button>
     </section>
 
   </article>
@@ -205,6 +205,19 @@
     <p>인증코드 오류입니다. <br> 인증코드를 다시 확인해주세요.</p>
     <section class="bottomBtnWrapper">
       <button class="closeBtn styledBtn backBlue textWhite">확인</button>
+    </section>
+  </dialog>
+
+  <dialog id="adminLoginDialog" class="styledDialog backLightGray">
+    <p>관리자 로그인</p>
+    <label for="id">ID: </label>
+    <input type="text" id="id" name="id">
+    <br>
+    <label for="pwd">PW: </label>
+    <input type="password" id="pwd" name="pwd">
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backGray textWhite">뒤로가기</button>
+      <button id="loginBtn" class="styledBtn backBlue textWhite">로그인</button>
     </section>
   </dialog>
 
