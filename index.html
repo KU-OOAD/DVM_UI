@@ -65,6 +65,10 @@
       background-color: #6397d5;
     }
 
+    .backRed {
+      background-color: #d56363;
+    }
+
     .backLightGray {
       background-color: #e0e0e0;
     }
@@ -93,7 +97,7 @@
       color: #838383;
     }
 
-    #drinkCountWrapper {
+    #drinkCountWrapper, #manageCountWrapper {
       display: flex;
       padding-bottom: 10px;
     }
@@ -113,6 +117,29 @@
     </section>
 
   </article>
+
+  <article class="pageContainer backLightGray">
+    <section id="adminDrinksContainer" class="gridContainer"></section>
+
+    <section class="bottomBtnWrapper">
+      <button id="logoutBtn" class="styledBtn backBlue textWhite">관리자 모드 해제</button>
+    </section>
+
+  </article>
+
+  <dialog id="manageDrinkDialog" class="styledDialog backLightGray">
+    <p id="manageDrinkDialogInfo"></p>
+    <section id="manageCountWrapper">
+      <button id="countDecBtn" class="styledBtn">-</button>
+      <p id="manageDrinkCountNum">0</p>
+      <button id="countIncBtn" class="styledBtn">+</button>      
+    </section>
+    <section class="bottomBtnWrapper">
+      <button class="closeBtn styledBtn backGray textWhite">뒤로가기</button>
+      <button id="manageDecBtn" class="styledBtn backRed textWhite">빼기</button>
+      <button id="manageIncBtn" class="styledBtn backBlue textWhite">추가하기</button>
+    </section>
+  </dialog>
 
   <dialog id="selectDrinkDialog" class="styledDialog backLightGray">
     <p id="selectDrinkDialogInfo"></p>

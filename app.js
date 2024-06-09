@@ -182,6 +182,31 @@ const getCodeDrink = async (code) => {
   }
 };*/
 
+const manageDrink = async (drinkCodeWithNum) => {
+  try {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(drinkCodeWithNum)
+    };
+
+    const response = await fetch(`${API_URL}/admin/manage`, requestOptions);
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+
+    const data = await response.json();
+    console.log('Success:', data);
+    return data;
+  } catch (error) {
+    console.error('Error: ', error);
+    throw error;
+  }
+};
+
 // const drinks = getDrinks(); // api
 const drinks = [ // api dummy
   {
@@ -228,6 +253,7 @@ let drinkCount = 0;
 let drinkId = "";
 let drinkName = "";
 let drinkPrice = 0;
+let drinkNum = 0;
 let x = "", y = "";
 const purchaseBtn = document.getElementById('purchaseBtn');
 
@@ -245,6 +271,14 @@ const issueCodeDialog = document.getElementById('issueCodeDialog');
 const enterCodeBtn = document.getElementById('enterCodeBtn');
 const enterCodeDialog = document.getElementById('enterCodeDialog');
 
+const adminDrinksContainer = document.getElementById('adminDrinksContainer');
+const manageDrinkDialog = document.getElementById('manageDrinkDialog');
+const manageDrinkDialogInfo = document.getElementById('manageDrinkDialogInfo');
+const countDecBtn = document.getElementById('countDecBtn');
+const countIncBtn = document.getElementById('countIncBtn');
+const manageDrinkCountNum = document.getElementById('manageDrinkCountNum');
+const manageDecBtn = document.getElementById('manageDecBtn');
+const manageIncBtn = document.getElementById('manageIncBtn');
 const adminModeBtn = document.getElementById('adminModeBtn');
 const adminLoginDialog = document.getElementById('adminLoginDialog');
 const id = document.getElementById('id');
@@ -253,7 +287,7 @@ const pwd = document.getElementById('pwd');
 drinks.map((drink) => {
   const button = document.createElement('button');
   button.className = 'styledBtn backGreen round textWhite';
-  const drinkBtnContent = `${drink.id}: ${drink.drinkName} <br> ${drink.drinkPrice}원`
+  const drinkBtnContent = `${drink.id} - ${drink.drinkName} <br> ${drink.drinkPrice}원`
   button.innerHTML = drinkBtnContent;
   button.addEventListener('click', () => {
     drinkInfo.innerHTML = drinkBtnContent;
@@ -267,6 +301,22 @@ drinks.map((drink) => {
   buttonContainer.appendChild(button);
 });
 
+drinks.map((drink) => {
+  const button = document.createElement('button');
+  button.className = 'styledBtn backGreen round textWhite';
+  const drinkBtnContent = `${drink.id} ${drink.drinkName} <br> ${drink.drinkNum}개`
+  button.innerHTML = drinkBtnContent;
+  button.addEventListener('click', () => {
+    manageDrinkDialogInfo.innerHTML = drinkBtnContent;
+    drinkCount = 0;
+    manageDrinkCountNum.textContent = drinkCount;
+    drinkNum = drink.drinkNum;
+    drinkId = drink.id;
+    manageDrinkDialog.showModal();
+  });
+  adminDrinksContainer.appendChild(button);
+});
+
 decrementBtn.addEventListener('click', () => {
   if (drinkCount > 0) {
     drinkCount--;
@@ -274,10 +324,54 @@ decrementBtn.addEventListener('click', () => {
   }
 });
 
+countDecBtn.addEventListener('click', () => {
+  if (drinkCount > 0) {
+    drinkCount--;
+    manageDrinkCountNum.textContent = drinkCount;
+  }
+});
+
 incrementBtn.addEventListener('click', () => {
   if (drinkCount <= 99) {
     drinkCount++;
     drinkCountNum.textContent = drinkCount;    
+  }
+});
+
+countIncBtn.addEventListener('click', () => {
+  if (drinkCount <= 99) {
+    drinkCount++;
+    manageDrinkCountNum.textContent = drinkCount;
+  }
+});
+
+manageDecBtn.addEventListener('click', () => {
+  if (drinkCount <= drinkNum && drinkCount != 0) { // 실제 음료개수 이하의 음료를 빼야 함
+    const updatedDrinkCount = drinkNum - drinkCount;
+    const reqText = `${drinkId} ${updatedDrinkCount}`;
+    // const isManageSuccess = manageDrink(reqText); // api
+    const isManageSuccess = "ok" // api dummy
+
+    if (isManageSuccess == "ok") {
+      // drinks = getdrinks(); // api
+      console.log(reqText); // dummy test
+      manageDrinkDialog.close();
+    }
+  }
+});
+
+manageIncBtn.addEventListener('click', () => {
+  if (drinkCount + drinkNum <= 99 && drinkCount != 0) { // 업데이트된 음료 개수가 99개 이하
+    const updatedDrinkCount = drinkNum + drinkCount;
+    const reqText = `${drinkId} ${updatedDrinkCount}`;
+    // const isManageSuccess = manageDrink(reqText); // api
+    const isManageSuccess = "ok" // api dummy
+
+    if (isManageSuccess == "ok") {
+      // drinks = getdrinks(); // api
+      console.log(reqText); // dummy test
+      manageDrinkDialog.close();
+    }
   }
 });
 
@@ -409,6 +503,7 @@ function closeDialog(dialogId) {
     drinkId = "";
     drinkName = "";
     drinkPrice = 0;
+    drinkNum = 0;
     dialog.close();
   }
 }
