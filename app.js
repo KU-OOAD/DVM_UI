@@ -181,7 +181,57 @@ const getCodeDrink = async (code) => {
     throw error;
   }
 };*/
+/*
+const login = async (idPwd) => {
+  try {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(idPwd)
+    };
 
+    const response = await fetch(`${API_URL}/admin/login`, requestOptions);
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+
+    const data = await response.json();
+    console.log('Success:', data);
+    return data;
+  } catch (error) {
+    console.error('Error: ', error);
+    throw error;
+  }
+};*/
+/*
+const logout = async () => {
+  try {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(idPwd)
+    };
+
+    const response = await fetch(`${API_URL}/admin/logout`, requestOptions);
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+
+    const data = await response.json();
+    console.log('Success:', data);
+    return data;
+  } catch (error) {
+    console.error('Error: ', error);
+    throw error;
+  }
+};*/
+/*
 const manageDrink = async (drinkCodeWithNum) => {
   try {
     const requestOptions = {
@@ -205,7 +255,7 @@ const manageDrink = async (drinkCodeWithNum) => {
     console.error('Error: ', error);
     throw error;
   }
-};
+};*/
 
 // const drinks = getDrinks(); // api
 const drinks = [ // api dummy
@@ -240,6 +290,9 @@ const drinks = [ // api dummy
     "drinkNum":10
   },
 ];
+
+const drinkPage = document.getElementById('drinkPage');
+const adminPage = document.getElementById('adminPage');
 
 const buttonContainer = document.getElementById('drinksContainer');
 const closeBtns = document.querySelectorAll('.closeBtn');
@@ -281,6 +334,8 @@ const manageDecBtn = document.getElementById('manageDecBtn');
 const manageIncBtn = document.getElementById('manageIncBtn');
 const adminModeBtn = document.getElementById('adminModeBtn');
 const adminLoginDialog = document.getElementById('adminLoginDialog');
+const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
 const id = document.getElementById('id');
 const pwd = document.getElementById('pwd');
 
@@ -490,10 +545,29 @@ enterCodeBtn.addEventListener('click', () => {
 
 adminModeBtn.addEventListener('click', () => {
   adminLoginDialog.showModal();
-  if (id == adminId && pwd == adminPwd) {
+});
 
+loginBtn.addEventListener('click', () => {
+  const reqLoginText = `${id.value} ${pwd.value}`;
+  // const isLoginOk = login(reqLoginText); // api
+  const isLoginOk = "ok"; // api dummy
+
+  if (isLoginOk == "ok") {
+    adminLoginDialog.close();
+    drinkPage.style.display = 'none';
+    adminPage.style.display = 'block';
   }
-})
+});
+
+logoutBtn.addEventListener('click', () => {
+  // const isLogoutOk = logout(); // api
+  const isLogoutOk = "ok";
+
+  if (isLogoutOk == "ok") {
+    adminPage.style.display = 'none';
+    drinkPage.style.display = 'block';
+  }
+});
 
 // Close dialog function
 function closeDialog(dialogId) {
