@@ -1,60 +1,33 @@
-// const drinks = Array.from({ length: 20 }, (_, i) => `음료${i + 1} <br/>1000원`); // TODO: api get
-let isPaySuccess = false // TODO: api get
-const code = "123" // TODO: api get
-// let x = "12", y = "25";                                                 // (dummy data) api get
 const adminId = "a", adminPwd = 1;
 
 const API_URL = 'http://43.202.61.53:9001';
+/*
+const getDrinks = async () => {
+  try {
+    const response = await fetch(`${API_URL}/drink`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+    const data = await response.json();
 
-// const getDrinks = async () => {
-const getDrinks = () => {
-  // try {
-  //   const response = await fetch(`${API_URL}/drink`);
-  //   if (!response.ok) {
-  //     throw new Error('Network response was not ok ' + response.statusText);
-  //   }
-  //   const data = await response.json();
-  //   return data;
-  // } catch (error) {
-  //   console.error('There was a problem with the fetch operation:', error);
-  //   throw error;
-  // }
+    // data objectification
+    const lines = data.trim().split('\n');
+    const splitedData = lines.map(line => {
+      const [id, drinkName, drinkPrice, drinkNum] = line.split(' ');
+      return {
+        id: id,
+        drinkName: drinkName,
+        drinkPrice: parseInt(drinkPrice),
+        drinkNum: parseInt(drinkNum)
+      };
+    });
 
-  // 더미데이터
-  const dummyData = [
-    {
-      "id":1,
-      "drinkName":"콜라",
-      "drinkPrice":1000,
-      "drinkNum":10
-    },
-    {
-      "id":2,
-      "drinkName":"사이다",
-      "drinkPrice":1000,
-      "drinkNum":7
-    },
-    {
-      "id":3,
-      "drinkName":"녹차",
-      "drinkPrice":1000,
-      "drinkNum":10
-    },
-    {
-      "id":4,
-      "drinkName":"홍차",
-      "drinkPrice":1000,
-      "drinkNum":10
-    },
-    {
-      "id":5,
-      "drinkName":"밀크티",
-      "drinkPrice":1000,
-      "drinkNum":10
-    },
-  ];
-  return dummyData;
-};
+    return splitedData;
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+    throw error;
+  }
+};*/
 /*
 const setDrink = async (drink) => {
   try {
@@ -209,9 +182,39 @@ const getCodeDrink = async (code) => {
   }
 };*/
 
-const drinks = getDrinks();
-
-const formatNumber = (num) => (num < 10 ? '0' : '') + num.toString();
+// const drinks = getDrinks(); // api
+const drinks = [ // api dummy
+  {
+    "id":"01",
+    "drinkName":"콜라",
+    "drinkPrice":1000,
+    "drinkNum":10
+  },
+  {
+    "id":"02",
+    "drinkName":"사이다",
+    "drinkPrice":1000,
+    "drinkNum":7
+  },
+  {
+    "id":"03",
+    "drinkName":"녹차",
+    "drinkPrice":1000,
+    "drinkNum":10
+  },
+  {
+    "id":"04",
+    "drinkName":"홍차",
+    "drinkPrice":1000,
+    "drinkNum":10
+  },
+  {
+    "id":"05",
+    "drinkName":"밀크티",
+    "drinkPrice":1000,
+    "drinkNum":10
+  },
+];
 
 const buttonContainer = document.getElementById('drinksContainer');
 const closeBtns = document.querySelectorAll('.closeBtn');
@@ -225,6 +228,7 @@ let drinkCount = 0;
 let drinkId = "";
 let drinkName = "";
 let drinkPrice = 0;
+let x = "", y = "";
 const purchaseBtn = document.getElementById('purchaseBtn');
 
 const payDialog = document.getElementById('payDialog');
@@ -246,7 +250,6 @@ const adminLoginDialog = document.getElementById('adminLoginDialog');
 const id = document.getElementById('id');
 const pwd = document.getElementById('pwd');
 
-// drink selection buttons, dialog
 drinks.map((drink) => {
   const button = document.createElement('button');
   button.className = 'styledBtn backGreen round textWhite';
@@ -257,7 +260,7 @@ drinks.map((drink) => {
     drinkCount = 0;
     drinkCountNum.textContent = drinkCount;
     drinkName = drink.drinkName;
-    drinkId = formatNumber(drink.id);
+    drinkId = drink.id;
     drinkPrice = drink.drinkPrice;
     selectDrinkDialog.showModal();
   });
@@ -289,7 +292,7 @@ purchaseBtn.addEventListener('click', () => {
     const payInfo = "12 7"; // api dummy test
     const match = payInfo.match(/^(\d+) (\d+)$/);
     let isPrepay = false;
-    let x = '', y = '';
+    x = "", y = "";
 
     if (match) {
       isPrepay = true;
@@ -325,9 +328,15 @@ payBtn.addEventListener('click', () => {
 
   cardInfoEnterBtn.addEventListener('click', () => {
     const cardInfo = document.getElementById('cardInfo').value;
+    // const paidDrink = getPaidDrink(cardInfo); // api
+    const paidDrink = "사이다 1" // api dummy test
+    const match = paidDrink.match(/^(\D+) (\d+)$/);
+    
     if (cardInfo) {
       enterCardInfoDialog.close();
-      if (!isPaySuccess) {  // TODO: 결제성공 시 (api 필요) (코드수정필요)
+      if (match) {  // 결제성공 시
+        const getDrinkContent = document.getElementById('getDrinkContent');
+        getDrinkContent.innerHTML = `${paidDrink}개 수령해주세요.`
         successPayDialog.showModal();
       } else { // 결제실패 시
         failPayDialog.showModal();
@@ -342,9 +351,14 @@ prePayBtn.addEventListener('click', () => {
 
   cardInfoEnterBtn.addEventListener('click', () => {
     const cardInfo = document.getElementById('cardInfo').value;
+    // const code = getCode(cardInfo); // api
+    const code = "asdf123"; // api dummy
+    // const isPrepayAvailable = getIsPrePayAvaiable(); // api
+    const isPrepayAvailable = true; // api dummy
+
     if (cardInfo) {
       enterCardInfoDialog.close();
-      if (isPaySuccess) {  // TODO: 결제성공 시 (api 필요) (코드수정필요)
+      if (code != "no" && isPrepayAvailable) {  // 결제성공 시
         const issueCodeContent = document.getElementById('issueCodeContent');
         issueCodeContent.innerHTML = `인증코드는 ${code} 입니다. <br> 음료 ${drinkCount}개를 (${x}, ${y}) 위치의 <br> 자판기에서 수령하세요.`;
         issueCodeDialog.showModal();
@@ -361,9 +375,14 @@ enterCodeBtn.addEventListener('click', () => {
   const codeConfirmBtn = document.getElementById('codeConfirmBtn');
   codeConfirmBtn.addEventListener('click', () => {
     const EnteredCode = document.getElementById('code').value;
+    // const codeDrink = getCodeDrink(EnteredCode); // api
+    const codeDrink = "사이다 1" // api dummy
+
     if (EnteredCode) {
-      if (isPaySuccess) { // TODO: 수정 필요 => 인증코드가 맞으면
+      if (codeDrink != "no") { // TODO: 수정 필요 => 인증코드가 맞으면
         const successEnterDialog = document.getElementById('successEnterDialog');
+        const getCodeDrinkContent = document.getElementById('getCodeDrinkContent');
+        getCodeDrinkContent.innerHTML = `${codeDrink}개 수령해주세요.`
         enterCodeDialog.close();
         successEnterDialog.showModal();
       } else {
