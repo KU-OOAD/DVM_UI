@@ -2,6 +2,7 @@ const adminId = "a", adminPwd = 1;
 
 const API_URL = 'http://43.202.249.230:9001';
 
+// APIs
 const getDrinks = async () => {
   try {
     const response = await fetch(`${API_URL}/drink`);
@@ -117,15 +118,15 @@ const getPaidDrink = async (card) => {
     throw error;
   }
 };
-/*
+
 const getCode = async (card) => {
   try {
     const requestOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'text/plain'
       },
-      body: JSON.stringify(card)
+      body: card
     };
 
     const response = await fetch(`${API_URL}/pay/prepay`, requestOptions);
@@ -134,37 +135,37 @@ const getCode = async (card) => {
       throw new Error('Network response was not ok ' + response.statusText);
     }
 
-    const data = await response.json();
+    const data = await response.text();
     console.log('Success:', data);
     return data;
   } catch (error) {
     console.error('Error: ', error);
     throw error;
   }
-};*/
-/*
+};
+
 const getIsPrePayAvaiable = async () => {
   try {
     const response = await fetch(`${API_URL}/pay/isPrepayAvailable`);
     if (!response.ok) {
       throw new Error('Network response was not ok ' + response.statusText);
     }
-    const data = await response.json();
+    const data = await response.text();
     return data;
   } catch (error) {
     console.error('Error: ', error);
     throw error;
   }
-}*/
-/*
+};
+
 const getCodeDrink = async (code) => {
   try {
     const requestOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'text/plain'
       },
-      body: JSON.stringify(code)
+      body: code
     };
 
     const response = await fetch(`${API_URL}/code`, requestOptions);
@@ -173,14 +174,14 @@ const getCodeDrink = async (code) => {
       throw new Error('Network response was not ok ' + response.statusText);
     }
 
-    const data = await response.json();
+    const data = await response.text();
     console.log('Success:', data);
     return data;
   } catch (error) {
     console.error('Error: ', error);
     throw error;
   }
-};*/
+};
 
 const login = async (idPwd) => {
   try {
@@ -283,42 +284,7 @@ const getMyDrinks = async () => {
   }
 };
 
-// const drinks = getDrinks(); // api
-// const myDrink = getMyDrinks(); //
-/*
-const drinks = [ // api dummy
-  {
-    "id":"01",
-    "drinkName":"콜라",
-    "drinkPrice":1000,
-    "drinkNum":10
-  },
-  {
-    "id":"02",
-    "drinkName":"사이다",
-    "drinkPrice":1000,
-    "drinkNum":7
-  },
-  {
-    "id":"03",
-    "drinkName":"녹차",
-    "drinkPrice":1000,
-    "drinkNum":10
-  },
-  {
-    "id":"04",
-    "drinkName":"홍차",
-    "drinkPrice":1000,
-    "drinkNum":10
-  },
-  {
-    "id":"05",
-    "drinkName":"밀크티",
-    "drinkPrice":1000,
-    "drinkNum":10
-  },
-];*/
-
+// global variable
 const drinkPage = document.getElementById('drinkPage');
 const adminPage = document.getElementById('adminPage');
 
@@ -367,6 +333,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 const id = document.getElementById('id');
 const pwd = document.getElementById('pwd');
 
+// drink buttons
 const renderDrinkButtons = (drinks) => {
   buttonContainer.innerHTML = ''; // clear existing buttons
   drinks.forEach((drink) => {
@@ -408,15 +375,16 @@ const renderAdminDrinkButtons = (drinks) => {
   });  
 };
 
-const updateMyDrinkData = async () => {
+const updateDrinkData = async () => {
   const drinks = await getDrinks();
   renderDrinkButtons(drinks);
   // const myDrinks = await getMyDrinks();
   // renderAdminDrinkButtons(myDrinks);
 };
 
+// dialogs
 document.addEventListener('DOMContentLoaded', () => {
-  updateMyDrinkData();
+  updateDrinkData();
 
 
 
@@ -555,12 +523,12 @@ document.addEventListener('DOMContentLoaded', () => {
     prePayDialog.close();
     enterCardInfoDialog.showModal();
 
-    cardInfoEnterBtn.addEventListener('click', () => {
+    cardInfoEnterBtn.addEventListener('click', async () => {
       const cardInfo = document.getElementById('cardInfo').value;
-      // const code = getCode(cardInfo); // api
-      const code = "asdf123"; // api dummy
-      // const isPrepayAvailable = getIsPrePayAvaiable(); // api
-      const isPrepayAvailable = true; // api dummy
+      const code = await getCode(cardInfo); // api
+      // const code = "asdf123"; // api dummy
+      const isPrepayAvailable = await getIsPrePayAvaiable(); // api
+      // const isPrepayAvailable = true; // api dummy
 
       if (cardInfo) {
         enterCardInfoDialog.close();
@@ -579,10 +547,10 @@ document.addEventListener('DOMContentLoaded', () => {
     enterCodeDialog.showModal();
 
     const codeConfirmBtn = document.getElementById('codeConfirmBtn');
-    codeConfirmBtn.addEventListener('click', () => {
+    codeConfirmBtn.addEventListener('click', async () => {
       const EnteredCode = document.getElementById('code').value;
-      // const codeDrink = getCodeDrink(EnteredCode); // api
-      const codeDrink = "사이다 1" // api dummy
+      const codeDrink = await getCodeDrink(EnteredCode); // api
+      // const codeDrink = "사이다 1" // api dummy
 
       if (EnteredCode) {
         if (codeDrink != "no") { // TODO: 수정 필요 => 인증코드가 맞으면
@@ -620,7 +588,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   logoutBtn.addEventListener('click', async () => {
-    console.log('click');
     const isLogoutOk = await logout(); // api
     // const isLogoutOk = "ok"; // api dummy
 
